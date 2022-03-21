@@ -1,3 +1,6 @@
+#[macro_use] extern crate custom_derive;
+#[macro_use] extern crate newtype_derive;
+
 mod decimal;
 
 use std::collections::BTreeMap;
@@ -36,14 +39,14 @@ fn main() {
 
     let bid = OrderEntry {
         side: Side::Bid,
-        price: Decimal::new(40367.0),
-        amount: Decimal::new(1.0)
+        price: 40367.0.into(),
+        amount: 1.0.into()
     };
 
     let offer = OrderEntry {
         side: Side::Offer,
-        price: Decimal::new(40361.4),
-        amount: Decimal::new(0.4)
+        price: 40361.4.into(),
+        amount: 0.4.into()
     };
 
     ob.bids.insert(bid.amount, bid);

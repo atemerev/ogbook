@@ -2,7 +2,13 @@ use std::cmp::Ordering;
 use std::fmt;
 use std::fmt::{Debug, Formatter};
 
-pub struct Decimal(f64);
+// I put on my robe and wizard hat...
+
+custom_derive! {
+    #[repr(transparent)]
+    #[derive(Copy, Clone, NewtypeAdd(f64), NewtypeMul(f64), NewtypeDiv(f64), NewtypeSub(f64), NewtypeNeg)]
+    pub struct Decimal(f64);
+}
 
 impl Decimal {
     pub fn new(value: f64) -> Self {
@@ -45,13 +51,11 @@ impl PartialEq for Decimal {
 impl Eq for Decimal {
 }
 
-impl Clone for Decimal {
-    fn clone(&self) -> Self {
-        Decimal(self.0)
+impl From<f64> for Decimal {
+    fn from(value: f64) -> Self {
+        Decimal::new(value)
     }
 }
-
-impl Copy for Decimal {}
 
 impl Debug for Decimal {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
