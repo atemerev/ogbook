@@ -11,22 +11,22 @@ pub enum Side {
 #[derive(Debug)]
 pub struct OrderEntry {
     pub side: Side,
-    pub price: i64,
-    pub amount: i64
+    pub price: Decimal,
+    pub amount: Decimal
 }
 
 #[derive(Debug)]
 pub struct OrderBook {
     pub symbol: String,
-    pub bids: BTreeMap<i64, OrderEntry>,
-    pub offers: BTreeMap<i64, OrderEntry>
+    pub bids: BTreeMap<Decimal, OrderEntry>,
+    pub offers: BTreeMap<Decimal, OrderEntry>
 }
 
 fn main() {
     println!("Hello, world!");
 
-    let dec = Decimal::safe(0.2 * 0.2);
-    println!("{}", dec);
+    let dec = Decimal::new(0.2 * 0.2);
+    println!("0.2 * 0.2 = {}", dec);
 
     let mut ob = OrderBook {
         symbol: "BTC/USDT".to_string(),
@@ -36,14 +36,14 @@ fn main() {
 
     let bid = OrderEntry {
         side: Side::Bid,
-        price: 40367,
-        amount: 1
+        price: Decimal::new(40367.0),
+        amount: Decimal::new(1.0)
     };
 
     let offer = OrderEntry {
         side: Side::Offer,
-        price: 40361,
-        amount: 2
+        price: Decimal::new(40361.4),
+        amount: Decimal::new(0.4)
     };
 
     ob.bids.insert(bid.amount, bid);
