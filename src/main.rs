@@ -2,28 +2,10 @@
 #[macro_use] extern crate newtype_derive;
 
 mod decimal;
+mod model;
 
-use std::collections::BTreeMap;
 use crate::decimal::Decimal;
-
-#[derive(Debug)]
-pub enum Side {
-    Bid, Offer
-}
-
-#[derive(Debug)]
-pub struct OrderEntry {
-    pub side: Side,
-    pub price: Decimal,
-    pub amount: Decimal
-}
-
-#[derive(Debug)]
-pub struct OrderBook {
-    pub symbol: String,
-    pub bids: BTreeMap<Decimal, OrderEntry>,
-    pub offers: BTreeMap<Decimal, OrderEntry>
-}
+use crate::model::{OrderBook, OrderEntry, Side};
 
 fn main() {
     println!("Hello, world!");
@@ -31,11 +13,7 @@ fn main() {
     let dec = Decimal::new(0.2 * 0.2);
     println!("0.2 * 0.2 = {}", dec);
 
-    let mut ob = OrderBook {
-        symbol: "BTC/USDT".to_string(),
-        bids: BTreeMap::new(),
-        offers: BTreeMap::new()
-    };
+    let mut ob = OrderBook::new("BTC/USDT".into());
 
     let bid = OrderEntry {
         side: Side::Bid,
@@ -49,8 +27,8 @@ fn main() {
         amount: 0.4.into()
     };
 
-    ob.bids.insert(bid.amount, bid);
-    ob.offers.insert(offer.amount, offer);
+    ob.insert(bid);
+    ob.insert(offer);
 
     println!("{:?}", ob);
 }
