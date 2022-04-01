@@ -3,10 +3,11 @@
 
 mod decimal;
 mod model;
+mod orderbook;
 
 use crate::decimal::Decimal;
-use crate::model::{OrderBook, OrderEntry, Side};
-use crate::Side::{Bid, Offer};
+use crate::model::Side::{Bid, Offer};
+use crate::orderbook::{OrderEntry, OrderBook};
 
 fn main() {
     println!("Hello, world!");

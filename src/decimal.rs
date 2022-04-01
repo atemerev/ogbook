@@ -13,7 +13,7 @@ custom_derive! {
 impl Decimal {
     pub fn new(value: f64) -> Self {
         const FACTOR: f64 = 1e8;
-        return if value > (f64::MAX / FACTOR) || value < (f64::MIN / FACTOR) {
+        if !((f64::MIN / FACTOR)..=(f64::MAX / FACTOR)).contains(&value) {
             Decimal(value)
         } else {
             let pre = if value < 0.0 { value * FACTOR - 0.5 } else { value * FACTOR + 0.5 };
@@ -30,21 +30,21 @@ impl fmt::Display for Decimal {
 
 impl Ord for Decimal {
     fn cmp(&self, other: &Self) -> Ordering {
-        return if self.0 == other.0 { Ordering::Equal }
+        if self.0 == other.0 { Ordering::Equal }
         else if self.0 < other.0 { Ordering::Less }
-        else { Ordering::Greater };
+        else { Ordering::Greater }
     }
 }
 
 impl PartialOrd for Decimal {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        return Some(self.cmp(other));
+        Some(self.cmp(other))
     }
 }
 
 impl PartialEq for Decimal {
     fn eq(&self, other: &Self) -> bool {
-        return self.0 == other.0;
+        self.0 == other.0
     }
 }
 
