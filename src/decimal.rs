@@ -16,7 +16,11 @@ impl Decimal {
         if !((f64::MIN / FACTOR)..=(f64::MAX / FACTOR)).contains(&value) {
             Decimal(value)
         } else {
-            let pre = if value < 0.0 { value * FACTOR - 0.5 } else { value * FACTOR + 0.5 };
+            let pre = if value < 0.0 {
+                value * FACTOR - 0.5
+            } else {
+                value * FACTOR + 0.5
+            };
             Decimal(pre.floor() / FACTOR)
         }
     }
@@ -30,9 +34,13 @@ impl fmt::Display for Decimal {
 
 impl Ord for Decimal {
     fn cmp(&self, other: &Self) -> Ordering {
-        if self.0 == other.0 { Ordering::Equal }
-        else if self.0 < other.0 { Ordering::Less }
-        else { Ordering::Greater }
+        if self.0 == other.0 {
+            Ordering::Equal
+        } else if self.0 < other.0 {
+            Ordering::Less
+        } else {
+            Ordering::Greater
+        }
     }
 }
 
@@ -48,8 +56,7 @@ impl PartialEq for Decimal {
     }
 }
 
-impl Eq for Decimal {
-}
+impl Eq for Decimal {}
 
 impl From<f64> for Decimal {
     fn from(value: f64) -> Self {

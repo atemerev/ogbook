@@ -6,19 +6,19 @@ use std::collections::BTreeMap;
 #[derive(Debug, Copy, Clone)]
 pub struct OrderKey {
     pub side: Side,
-    pub price: Decimal
+    pub price: Decimal,
 }
 
 #[derive(Debug, Copy, Clone)]
 pub struct OrderEntry {
     pub key: OrderKey,
-    pub amount: Decimal
+    pub amount: Decimal,
 }
 
 impl OrderEntry {
     pub fn new(side: Side, price: Decimal, amount: Decimal) -> OrderEntry {
-        let key = OrderKey {side, price};
-        OrderEntry {key, amount}
+        let key = OrderKey { side, price };
+        OrderEntry { key, amount }
     }
 }
 
@@ -27,7 +27,13 @@ impl Ord for OrderKey {
         let part = self.partial_cmp(other);
         match part {
             Some(res) => res,
-            None => if self.side == Side::Bid { Ordering::Less } else { Ordering::Greater }
+            None => {
+                if self.side == Side::Bid {
+                    Ordering::Less
+                } else {
+                    Ordering::Greater
+                }
+            }
         }
     }
 }
@@ -40,7 +46,9 @@ impl PartialOrd for OrderKey {
             } else {
                 Some(other.price.cmp(&self.price))
             }
-        } else { None }
+        } else {
+            None
+        }
     }
 }
 
@@ -52,13 +60,11 @@ impl PartialEq for OrderKey {
 
 impl Eq for OrderKey {}
 
-
-
 #[derive(Debug)]
 pub struct OrderBook {
     pub symbol: String,
     bids: BTreeMap<OrderKey, OrderEntry>,
-    offers: BTreeMap<OrderKey, OrderEntry>
+    offers: BTreeMap<OrderKey, OrderEntry>,
 }
 
 impl OrderBook {
@@ -66,13 +72,16 @@ impl OrderBook {
         OrderBook {
             symbol,
             bids: BTreeMap::new(),
-            offers: BTreeMap::new()
+            offers: BTreeMap::new(),
         }
     }
 
     pub fn insert(&mut self, entry: OrderEntry) {
-        let line = if entry.key.side == Side::Bid { &mut self.bids } else {&mut self.offers};
+        let line = if entry.key.side == Side::Bid {
+            &mut self.bids
+        } else {
+            &mut self.offers
+        };
         line.insert(entry.key, entry);
     }
 }
-
